@@ -2,7 +2,7 @@ services:
   # 1. FastAPI Backend (Web Service)
   - type: web
     name: sports-predict-backend
-    env: python
+    runtime: python
     # Optimization: Install CPU-only PyTorch first to save build time, memory, and disk space
     buildCommand: pip install torch --extra-index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
@@ -19,9 +19,9 @@ services:
   # 2. React Frontend (Static Site)
   - type: web
     name: sports-predict-frontend
-    env: static
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
-    publishPath: frontend/dist
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
         fromService:
