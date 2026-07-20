@@ -3,6 +3,7 @@ services:
   - type: web
     name: sports-predict-backend
     runtime: python
+    plan: free  # Explicitly use the free plan to avoid requiring payment information
     # Optimization: Install CPU-only PyTorch first to save build time, memory, and disk space
     buildCommand: pip install torch --extra-index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
