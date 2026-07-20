@@ -1,0 +1,143 @@
+{
+    "timestamp": "2026-07-19T14:20:45.863231",
+    "total_matches_tested": 150,
+    "best_model": "XGBoost",
+    "models": [
+        {
+            "name": "XGBoost",
+            "description": "Modelo de árboles de decisión con boosting",
+            "accuracy": 0.44666666666666666,
+            "mcnemar_tests": [
+                {
+                    "compared_to": "Bayesian Ridge",
+                    "p_value": 0.1144713633667902,
+                    "significant": false
+                },
+                {
+                    "compared_to": "LSTM con Atención",
+                    "p_value": 1.0,
+                    "significant": false
+                },
+                {
+                    "compared_to": "Ensemble Final",
+                    "p_value": 1.0,
+                    "significant": false
+                }
+            ],
+            "additional_tests": {
+                "binomial_test": {
+                    "p_value": 0.0025283461886247047,
+                    "significant": true,
+                    "description": "¿Predice mejor que el azar (33%)?"
+                },
+                "chi_square_test": {
+                    "p_value": 4.4617119190389996e-41,
+                    "significant": true,
+                    "description": "¿Distribución de clases difiere de la real?"
+                }
+            }
+        },
+        {
+            "name": "Bayesian Ridge",
+            "description": "Modelo probabilístico de regresión",
+            "accuracy": 0.32666666666666666,
+            "mcnemar_tests": [
+                {
+                    "compared_to": "XGBoost",
+                    "p_value": 0.1144713633667902,
+                    "significant": false
+                },
+                {
+                    "compared_to": "LSTM con Atención",
+                    "p_value": 0.1144713633667902,
+                    "significant": false
+                },
+                {
+                    "compared_to": "Ensemble Final",
+                    "p_value": 0.1144713633667902,
+                    "significant": false
+                }
+            ],
+            "additional_tests": {
+                "binomial_test": {
+                    "p_value": 0.5989553733621561,
+                    "significant": false,
+                    "description": "¿Predice mejor que el azar (33%)?"
+                },
+                "chi_square_test": {
+                    "p_value": 7.271412221708126e-68,
+                    "significant": true,
+                    "description": "¿Distribución de clases difiere de la real?"
+                }
+            }
+        },
+        {
+            "name": "LSTM con Atención",
+            "description": "Red neuronal recurrente para patrones temporales",
+            "accuracy": 0.44666666666666666,
+            "mcnemar_tests": [
+                {
+                    "compared_to": "XGBoost",
+                    "p_value": 1.0,
+                    "significant": false
+                },
+                {
+                    "compared_to": "Bayesian Ridge",
+                    "p_value": 0.1144713633667902,
+                    "significant": false
+                },
+                {
+                    "compared_to": "Ensemble Final",
+                    "p_value": 1.0,
+                    "significant": false
+                }
+            ],
+            "additional_tests": {
+                "binomial_test": {
+                    "p_value": 0.0025283461886247047,
+                    "significant": true,
+                    "description": "¿Predice mejor que el azar (33%)?"
+                },
+                "chi_square_test": {
+                    "p_value": 4.4617119190389996e-41,
+                    "significant": true,
+                    "description": "¿Distribución de clases difiere de la real?"
+                }
+            }
+        },
+        {
+            "name": "Ensemble Final",
+            "description": "Meta-modelo (Logistic Regression) que combina todos los anteriores",
+            "accuracy": 0.44666666666666666,
+            "mcnemar_tests": [
+                {
+                    "compared_to": "XGBoost",
+                    "p_value": 1.0,
+                    "significant": false
+                },
+                {
+                    "compared_to": "Bayesian Ridge",
+                    "p_value": 0.1144713633667902,
+                    "significant": false
+                },
+                {
+                    "compared_to": "LSTM con Atención",
+                    "p_value": 1.0,
+                    "significant": false
+                }
+            ],
+            "additional_tests": {
+                "binomial_test": {
+                    "p_value": 0.0025283461886247047,
+                    "significant": true,
+                    "description": "¿Predice mejor que el azar (33%)?"
+                },
+                "chi_square_test": {
+                    "p_value": 4.4617119190389996e-41,
+                    "significant": true,
+                    "description": "¿Distribución de clases difiere de la real?"
+                }
+            }
+        }
+    ]
+}

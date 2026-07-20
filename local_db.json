@@ -1,0 +1,296 @@
+{
+    "users": [
+        {
+            "id": "admin_user",
+            "email": "admin@example.com",
+            "username": "admin",
+            "password": "admin123",
+            "full_name": "Administrador",
+            "subscription_tier": "elite",
+            "created_at": "2026-07-18T21:04:36.625119"
+        },
+        {
+            "id": "regular_user",
+            "email": "usuario@example.com",
+            "username": "usuario",
+            "password": "usuario123",
+            "full_name": "Usuario Normal",
+            "subscription_tier": "free",
+            "created_at": "2026-07-18T21:04:36.625119"
+        }
+    ],
+    "teams": [
+        {
+            "id": "t1",
+            "name": "Real Madrid",
+            "country": "Espa\u00f1a",
+            "sport_type": "football"
+        },
+        {
+            "id": "t2",
+            "name": "Barcelona",
+            "country": "Espa\u00f1a",
+            "sport_type": "football"
+        },
+        {
+            "id": "t3",
+            "name": "Manchester United",
+            "country": "Inglaterra",
+            "sport_type": "football"
+        },
+        {
+            "id": "t4",
+            "name": "Liverpool",
+            "country": "Inglaterra",
+            "sport_type": "football"
+        },
+        {
+            "id": "t5",
+            "name": "Manchester City",
+            "country": "Inglaterra",
+            "sport_type": "football"
+        },
+        {
+            "id": "t6",
+            "name": "Arsenal",
+            "country": "Inglaterra",
+            "sport_type": "football"
+        },
+        {
+            "id": "t7",
+            "name": "PSG",
+            "country": "Francia",
+            "sport_type": "football"
+        },
+        {
+            "id": "t8",
+            "name": "Marseille",
+            "country": "Francia",
+            "sport_type": "football"
+        },
+        {
+            "id": "t9",
+            "name": "Bayern Munich",
+            "country": "Alemania",
+            "sport_type": "football"
+        },
+        {
+            "id": "t10",
+            "name": "Borussia Dortmund",
+            "country": "Alemania",
+            "sport_type": "football"
+        },
+        {
+            "id": "t11",
+            "name": "Inter Milan",
+            "country": "Italia",
+            "sport_type": "football"
+        },
+        {
+            "id": "t12",
+            "name": "AC Milan",
+            "country": "Italia",
+            "sport_type": "football"
+        },
+        {
+            "id": "t13",
+            "name": "Juventus",
+            "country": "Italia",
+            "sport_type": "football"
+        },
+        {
+            "id": "t14",
+            "name": "Napoli",
+            "country": "Italia",
+            "sport_type": "football"
+        },
+        {
+            "id": "t15",
+            "name": "Chelsea",
+            "country": "Inglaterra",
+            "sport_type": "football"
+        },
+        {
+            "id": "t16",
+            "name": "Tottenham",
+            "country": "Inglaterra",
+            "sport_type": "football"
+        },
+        {
+            "id": "t17",
+            "name": "Atletico Madrid",
+            "country": "Espa\u00f1a",
+            "sport_type": "football"
+        },
+        {
+            "id": "t18",
+            "name": "Real Sociedad",
+            "country": "Espa\u00f1a",
+            "sport_type": "football"
+        }
+    ],
+    "matches": [
+        {
+            "id": "m1",
+            "home_team_name": "Real Madrid",
+            "away_team_name": "Barcelona",
+            "match_date": "2026-07-20T21:00:00.000000",
+            "league": "La Liga",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m2",
+            "home_team_name": "Manchester United",
+            "away_team_name": "Liverpool",
+            "match_date": "2026-07-21T21:00:00.000000",
+            "league": "Premier League",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m3",
+            "home_team_name": "Manchester City",
+            "away_team_name": "Arsenal",
+            "match_date": "2026-07-20T18:00:00.000000",
+            "league": "Premier League",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m4",
+            "home_team_name": "PSG",
+            "away_team_name": "Marseille",
+            "match_date": "2026-07-22T20:45:00.000000",
+            "league": "Ligue 1",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m5",
+            "home_team_name": "Bayern Munich",
+            "away_team_name": "Borussia Dortmund",
+            "match_date": "2026-07-21T18:30:00.000000",
+            "league": "Bundesliga",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m6",
+            "home_team_name": "Inter Milan",
+            "away_team_name": "AC Milan",
+            "match_date": "2026-07-23T20:45:00.000000",
+            "league": "Serie A",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m7",
+            "home_team_name": "Juventus",
+            "away_team_name": "Napoli",
+            "match_date": "2026-07-22T19:00:00.000000",
+            "league": "Serie A",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m8",
+            "home_team_name": "Chelsea",
+            "away_team_name": "Tottenham",
+            "match_date": "2026-07-24T21:00:00.000000",
+            "league": "Premier League",
+            "sport_type": "football",
+            "status": "scheduled"
+        },
+        {
+            "id": "m9",
+            "home_team_name": "Atletico Madrid",
+            "away_team_name": "Real Sociedad",
+            "match_date": "2026-07-23T21:00:00.000000",
+            "league": "La Liga",
+            "sport_type": "football",
+            "status": "scheduled"
+        }
+    ],
+    "user_predictions": [
+        {
+            "id": "9949dd3b-7428-4376-a970-12ecffab06e8",
+            "user_id": "admin_user",
+            "match_id": "m1",
+            "predicted_home_score": 0,
+            "predicted_away_score": 0,
+            "confidence_level": 0.5,
+            "prediction_status": "won",
+            "created_at": "2026-07-18T21:18:02.590177"
+        },
+        {
+            "id": "2664520f-0376-4c0d-a18b-7770a2258a68",
+            "user_id": "admin_user",
+            "match_id": "m1",
+            "predicted_home_score": 1,
+            "predicted_away_score": 0,
+            "confidence_level": 0.8,
+            "prediction_status": "pending",
+            "created_at": "2026-07-18T21:18:23.930129"
+        },
+        {
+            "id": "da4ad5ef-33a8-4907-83fb-2946f62d04a2",
+            "user_id": "admin_user",
+            "match_id": "m3",
+            "predicted_home_score": 5,
+            "predicted_away_score": 4,
+            "confidence_level": 0.7,
+            "prediction_status": "pending",
+            "created_at": "2026-07-20T10:05:31.614513"
+        }
+    ],
+    "competitions": [
+        {
+            "id": 1,
+            "name": "Liga Predictor Enero",
+            "description": "Predice correctamente y gana premios semanales",
+            "participants": 245,
+            "prize": "$1,000",
+            "entry_fee": "Gratis",
+            "deadline": "2026-07-31",
+            "status": "active",
+            "prize_pool": 1000
+        },
+        {
+            "id": 2,
+            "name": "Torneo Premium Elite",
+            "description": "Exclusivo para suscriptores premium - Grandes premios",
+            "participants": 89,
+            "prize": "$2,500",
+            "entry_fee": "$10",
+            "deadline": "2026-07-25",
+            "status": "active",
+            "prize_pool": 2500
+        },
+        {
+            "id": 3,
+            "name": "Desaf\u00edo de 100 Predicciones",
+            "description": "Realiza 100 predicciones precisas y gana jackpot",
+            "participants": 156,
+            "prize": "$500",
+            "entry_fee": "Gratis",
+            "deadline": "2026-08-15",
+            "status": "active",
+            "prize_pool": 500
+        }
+    ],
+    "competition_participants": [
+        {
+            "user_id": "admin_user",
+            "competition_id": 1,
+            "joined_at": "2026-07-19T12:58:18.772669"
+        }
+    ],
+    "alerts_config": {
+        "new_matches": true,
+        "ai_predictions": true,
+        "competitions": true,
+        "ranking_changes": true,
+        "premium_offers": true
+    }
+}

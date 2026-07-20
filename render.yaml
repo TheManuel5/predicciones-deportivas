@@ -1,0 +1,30 @@
+services:
+  # 1. FastAPI Backend (Web Service)
+  - type: web
+    name: sports-predict-backend
+    env: python
+    # Optimization: Install CPU-only PyTorch first to save build time, memory, and disk space
+    buildCommand: pip install torch --extra-index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false  # Render will prompt you for this value during setup
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.10.12
+
+  # 2. React Frontend (Static Site)
+  - type: web
+    name: sports-predict-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: sports-predict-backend
+          type: web
+          property: host

@@ -1,0 +1,5 @@
+model,Accuracy
+XGBoost,0.49
+Bayesian Ridge,0.5
+LSTM con Atención,0.27
+Ensemble Final,0.49
