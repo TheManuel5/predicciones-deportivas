@@ -12,16 +12,22 @@ import Admin from './pages/Admin';
 import { TRANSLATIONS } from './translations';
 
 const getApiUrl = () => {
+  // First check if we're on Render's frontend domain
+  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    return 'https://sports-predict-backend.onrender.com';
+  }
+
+  // Otherwise use VITE_API_URL or localhost
   let url = import.meta.env.VITE_API_URL;
   if (!url || url.includes('127.0.0.1') || url.includes('localhost')) {
-    if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
-      return 'https://sports-predict-backend.onrender.com';
-    }
     url = 'http://127.0.0.1:8000';
   }
+  
+  // Ensure protocol is present
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     url = `https://${url}`;
   }
+  
   return url.replace(/\/+$/, '');
 };
 
