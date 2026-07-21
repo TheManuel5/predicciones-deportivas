@@ -395,18 +395,20 @@ def get_status():
 
 @app.post("/api/auth/login")
 def login(req: LoginRequest):
-    username = req.username
-    password = req.password
+    username = req.username.strip().lower()
+    password = req.password.strip()
     
     db = load_local_db()
     for user in db.get("users", []):
-        if user.get("username") == username and user.get("password") == password:
+        db_user = str(user.get("username", "")).strip().lower()
+        db_pass = str(user.get("password", "")).strip()
+        if db_user == username and db_pass == password:
             return {
                 "user_id": user.get("id"),
                 "username": user.get("username"),
                 "full_name": user.get("full_name", username),
                 "subscription_tier": user.get("subscription_tier", "free"),
-                "is_admin": username == "admin"
+                "is_admin": db_user == "admin"
             }
             
     raise HTTPException(status_code=401, detail="Credenciales incorrectas")

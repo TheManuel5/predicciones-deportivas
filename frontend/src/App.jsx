@@ -11,10 +11,24 @@ import Premium from './pages/Premium';
 import Admin from './pages/Admin';
 import { TRANSLATIONS } from './translations';
 
-let API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
-if (API_URL && !API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
-  API_URL = `https://${API_URL}`;
-}
+const getApiUrl = () => {
+  let url = import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    if (!url || url.includes('127.0.0.1') || url.includes('localhost')) {
+      const backendHost = window.location.hostname.replace('-frontend', '-backend');
+      return `https://${backendHost}`;
+    }
+  }
+  if (!url) {
+    url = 'http://127.0.0.1:8000';
+  }
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `https://${url}`;
+  }
+  return url.replace(/\/+$/, '');
+};
+
+const API_URL = getApiUrl();
 
 export default function App() {
   // Global App settings states
