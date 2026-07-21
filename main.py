@@ -365,6 +365,14 @@ class UpgradeRequest(BaseModel):
 # API ROUTES
 # ============================================================================
 
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "message": "SportsPredict Pro API is running",
+        "docs": "/docs"
+    }
+
 @app.get("/api/status")
 def get_status():
     connected = False
