@@ -588,13 +588,13 @@ async def ai_assistant(
                 types.Part.from_bytes(data=audio_bytes, mime_type="audio/wav")
             ]
             response = client.models.generate_content(
-                model='gemini-1.5-flash',
+                model='gemini-2.0-flash',
                 contents=contents
             )
         else:
             full_prompt = f"{prompt_text}\n\nUsuario: {message}"
             response = client.models.generate_content(
-                model='gemini-1.5-flash',
+                model='gemini-2.0-flash',
                 contents=full_prompt
             )
             
