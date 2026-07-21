@@ -356,11 +356,15 @@ def get_status():
     connected = False
     if supabase_client:
         try:
-            # Quick check
-            supabase_client.table('user_predictions').select('id').limit(1).execute()
+            # Quick check against kv_store or user_predictions
+            supabase_client.table('kv_store').select('key').limit(1).execute()
             connected = True
         except Exception:
-            pass
+            try:
+                supabase_client.table('user_predictions').select('id').limit(1).execute()
+                connected = True
+            except Exception:
+                pass
     return {
         "supabase_available": SUPABASE_AVAILABLE,
         "supabase_connected": connected,
