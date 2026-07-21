@@ -285,8 +285,8 @@ local_db = load_local_db()
 # ============================================================================
 def get_supabase_clients():
     supabase_url = os.environ.get("SUPABASE_URL")
-    supabase_key = os.environ.get("SUPABASE_KEY")
-    supabase_secret = os.environ.get("SUPABASE_SECRET_KEY")
+    supabase_key = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_SECRET_KEY")
+    supabase_secret = os.environ.get("SUPABASE_SECRET_KEY") or os.environ.get("SUPABASE_KEY")
     
     sb = None
     sb_service = None
