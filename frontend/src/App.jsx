@@ -13,13 +13,10 @@ import { TRANSLATIONS } from './translations';
 
 const getApiUrl = () => {
   let url = import.meta.env.VITE_API_URL;
-  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
-    if (!url || url.includes('127.0.0.1') || url.includes('localhost')) {
-      const backendHost = window.location.hostname.replace('-frontend', '-backend');
-      return `https://${backendHost}`;
+  if (!url || url.includes('127.0.0.1') || url.includes('localhost')) {
+    if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+      return 'https://sports-predict-backend.onrender.com';
     }
-  }
-  if (!url) {
     url = 'http://127.0.0.1:8000';
   }
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
