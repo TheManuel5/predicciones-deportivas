@@ -21,7 +21,6 @@ from feature_engineering import extract_match_features, create_sample_training_d
 import validate_models
 from reports import generate_predictions_report, generate_statistics_report, generate_competitions_report, generate_comprehensive_report
 from estadisticas import calculate_descriptive_stats, create_descriptive_stats_table
-from maintenance import TableManager
 from src_utils import get_sport_icon, get_status_emoji, get_tier_info
 
 from google import genai
@@ -304,7 +303,6 @@ def get_supabase_clients():
     return sb, sb_service
 
 supabase_client, supabase_service = get_supabase_clients()
-db_manager = TableManager(supabase_client)
 
 # ============================================================================
 # TRAINED ML MODELS LOADER
