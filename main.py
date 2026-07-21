@@ -64,9 +64,10 @@ def load_local_db() -> Dict[str, List]:
                 response = temp_client.table("kv_store").select("value").eq("key", "sports_predict_db").execute()
                 if response.data and len(response.data) > 0:
                     db_data = response.data[0]["value"]
-                    with open(LOCAL_DB_FILE, "w", encoding="utf-8") as f:
-                        json.dump(db_data, f, indent=4)
-                    return db_data
+                    if db_data and isinstance(db_data, dict) and len(db_data.get("matches", [])) > 0:
+                        with open(LOCAL_DB_FILE, "w", encoding="utf-8") as f:
+                            json.dump(db_data, f, indent=4)
+                        return db_data
             except Exception:
                 pass
 
@@ -242,12 +243,25 @@ def load_local_db() -> Dict[str, List]:
         }
         with open(LOCAL_DB_FILE, "w", encoding="utf-8") as f:
             json.dump(default_db, f, indent=4)
+        save_local_db(default_db)
         return default_db
-    try:
-        with open(LOCAL_DB_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return {}
+
+    loaded_db = None
+    if os.path.exists(LOCAL_DB_FILE):
+        try:
+            with open(LOCAL_DB_FILE, "r", encoding="utf-8") as f:
+                content = json.load(f)
+                if content and isinstance(content, dict) and len(content.get("matches", [])) > 0:
+                    loaded_db = content
+        except Exception:
+            pass
+
+    if loaded_db is not None:
+        save_local_db(loaded_db)
+        return loaded_db
+
+    save_local_db(default_db)
+    return default_db
 
 def save_local_db(db_data: Dict):
     with open(LOCAL_DB_FILE, "w", encoding="utf-8") as f:
@@ -633,13 +647,13 @@ async def ai_assistant(
                 types.Part.from_bytes(data=audio_bytes, mime_type="audio/wav")
             ]
             response = client.models.generate_content(
-                model='gemini-3.5-flash',
+                model='gemini-1.5-flash',
                 contents=contents
             )
         else:
             full_prompt = f"{prompt_text}\n\nUsuario: {message}"
             response = client.models.generate_content(
-                model='gemini-3.5-flash',
+                model='gemini-1.5-flash',
                 contents=full_prompt
             )
             
