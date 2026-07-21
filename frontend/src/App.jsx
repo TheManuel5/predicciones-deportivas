@@ -11,7 +11,10 @@ import Premium from './pages/Premium';
 import Admin from './pages/Admin';
 import { TRANSLATIONS } from './translations';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+let API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+if (API_URL && !API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
+  API_URL = `https://${API_URL}`;
+}
 
 export default function App() {
   // Global App settings states
