@@ -398,32 +398,14 @@ def login(req: LoginRequest):
     username = req.username
     password = req.password
     
-    # Try Supabase first
-    if supabase_client:
-        try:
-            res = supabase_client.table('users').select('*').eq('username', username).execute()
-            if res.data and len(res.data) > 0:
-                user = res.data[0]
-                if user.get('password') == password:
-                    return {
-                        "user_id": user.get('id'),
-                        "username": user.get('username'),
-                        "full_name": user.get('full_name', username),
-                        "subscription_tier": user.get('subscription_tier', 'free'),
-                        "is_admin": username == "admin"
-                    }
-        except Exception:
-            pass
-            
-    # Try Local Fallback DB
     db = load_local_db()
     for user in db.get("users", []):
         if user.get("username") == username and user.get("password") == password:
             return {
                 "user_id": user.get("id"),
                 "username": user.get("username"),
-                "full_name": user.get("full_name"),
-                "subscription_tier": user.get("subscription_tier"),
+                "full_name": user.get("full_name", username),
+                "subscription_tier": user.get("subscription_tier", "free"),
                 "is_admin": username == "admin"
             }
             
@@ -431,19 +413,8 @@ def login(req: LoginRequest):
 
 @app.get("/api/dashboard/stats")
 def get_dashboard_stats(user_id: str):
-    # Retrieve predictions
-    predictions = []
-    if supabase_client:
-        try:
-            res = supabase_client.table('user_predictions').select('*').eq('user_id', user_id).execute()
-            if res.data:
-                predictions = res.data
-        except Exception:
-            pass
-            
-    if not predictions:
-        db = load_local_db()
-        predictions = [p for p in db.get("user_predictions", []) if p.get("user_id") == user_id]
+    db = load_local_db()
+    predictions = [p for p in db.get("user_predictions", []) if p.get("user_id") == user_id]
         
     if not predictions:
         return {
@@ -457,17 +428,13 @@ def get_dashboard_stats(user_id: str):
     df = pd.DataFrame(predictions)
     total = len(df)
     
-    # Calculate accuracy simulation (status = won or simulated confidence)
     correct = 0
     if 'prediction_status' in df.columns:
         correct = len(df[df['prediction_status'] == 'won'])
     else:
-        # Simulate accuracy
         correct = len(df[df['confidence_level'] > 0.7])
         
     avg_conf = df['confidence_level'].mean() if 'confidence_level' in df.columns else 0.5
-    
-    # Deterministic ranking calculation
     rank_pct = max(5, min(95, 100 - int((correct / total) * 100) + np.random.randint(-5, 5))) if total > 0 else 99
     
     return {
@@ -481,36 +448,16 @@ def get_dashboard_stats(user_id: str):
 @app.get("/api/dashboard/matches")
 def get_dashboard_matches():
     matches = []
-    
-    # Get from Supabase matches table
-    if supabase_client:
-        try:
-            res = supabase_client.table('matches').select('*').execute()
-            if res.data:
-                for m in res.data:
-                    matches.append({
-                        "fixture": {"id": m.get("id"), "date": m.get("match_date"), "status": m.get("status", "NS")},
-                        "league": {"name": m.get("league", "Liga")},
-                        "teams": {
-                            "home": {"name": m.get("home_team_name")},
-                            "away": {"name": m.get("away_team_name")}
-                        }
-                    })
-        except Exception:
-            pass
-            
-    if not matches:
-        db = load_local_db()
-        for m in db.get("matches", []):
-            matches.append({
-                "fixture": {"id": m.get("id"), "date": m.get("match_date"), "status": m.get("status", "NS")},
-                "league": {"name": m.get("league", "Liga")},
-                "teams": {
-                    "home": {"name": m.get("home_team_name")},
-                    "away": {"name": m.get("away_team_name")}
-                }
-            })
-            
+    db = load_local_db()
+    for m in db.get("matches", []):
+        matches.append({
+            "fixture": {"id": m.get("id"), "date": m.get("match_date"), "status": m.get("status", "NS")},
+            "league": {"name": m.get("league", "Liga")},
+            "teams": {
+                "home": {"name": m.get("home_team_name")},
+                "away": {"name": m.get("away_team_name")}
+            }
+        })
     return matches
 
 @app.post("/api/predictions/save")
@@ -522,59 +469,35 @@ def save_user_prediction(req: PredictRequest):
         'predicted_home_score': req.predicted_home_score,
         'predicted_away_score': req.predicted_away_score,
         'confidence_level': req.confidence_level,
-        'prediction_status': np.random.choice(['pending', 'won', 'lost'], p=[0.6, 0.3, 0.1]), # Simulate status
+        'prediction_status': np.random.choice(['pending', 'won', 'lost'], p=[0.6, 0.3, 0.1]),
         'created_at': datetime.now().isoformat()
     }
     
-    # Save to Supabase
-    if supabase_client:
-        try:
-            supabase_client.table('user_predictions').insert(data).execute()
-            return {"success": True, "message": "Prediction saved to cloud"}
-        except Exception:
-            pass
-            
-    # Save to Local JSON DB
     db = load_local_db()
+    if "user_predictions" not in db:
+        db["user_predictions"] = []
     db["user_predictions"].append(data)
     save_local_db(db)
-    return {"success": True, "message": "Prediction saved locally"}
+    return {"success": True, "message": "Prediction saved"}
 
 @app.get("/api/predictions/history")
 def get_prediction_history(user_id: str):
-    predictions = []
-    if supabase_client:
-        try:
-            res = supabase_client.table('user_predictions').select('*, matches(home_team_name, away_team_name)').eq('user_id', user_id).execute()
-            if res.data:
-                for row in res.data:
-                    match_obj = row.get("matches")
-                    if match_obj:
-                        row["home_team_name"] = match_obj.get("home_team_name")
-                        row["away_team_name"] = match_obj.get("away_team_name")
-                predictions = res.data
-        except Exception:
-            pass
+    db = load_local_db()
+    raw_predictions = [p for p in db.get("user_predictions", []) if p.get("user_id") == user_id]
+    
+    matches_dict = {str(m["id"]): m for m in db.get("matches", [])}
+    for p in raw_predictions:
+        m_id = str(p.get("match_id"))
+        match_obj = matches_dict.get(m_id)
+        if match_obj:
+            p["home_team_name"] = match_obj.get("home_team_name")
+            p["away_team_name"] = match_obj.get("away_team_name")
+        else:
+            p["home_team_name"] = "Home"
+            p["away_team_name"] = "Away"
             
-    if not predictions:
-        db = load_local_db()
-        raw_predictions = [p for p in db.get("user_predictions", []) if p.get("user_id") == user_id]
-        
-        # Joint lookups
-        matches_dict = {str(m["id"]): m for m in db.get("matches", [])}
-        for p in raw_predictions:
-            m_id = str(p.get("match_id"))
-            match_obj = matches_dict.get(m_id)
-            if match_obj:
-                p["home_team_name"] = match_obj.get("home_team_name")
-                p["away_team_name"] = match_obj.get("away_team_name")
-            else:
-                p["home_team_name"] = "Home"
-                p["away_team_name"] = "Away"
-        predictions = raw_predictions
-        
-    predictions.sort(key=lambda x: x.get('created_at', ''), reverse=True)
-    return predictions
+    raw_predictions.sort(key=lambda x: x.get('created_at', ''), reverse=True)
+    return raw_predictions
 
 @app.get("/api/ai-predictions")
 def get_ai_predictions(sport: str = "Fútbol", min_confidence: float = 0.70, days: int = 7):
