@@ -42,8 +42,8 @@ app = FastAPI(title="SportsPredict Pro API", version="1.0.0")
 # CORS Setup for React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict to React domain
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
